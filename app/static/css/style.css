@@ -1,0 +1,36 @@
+.login-container{
+	color: white;
+	background: #7692af;
+	border-radius: 9%;
+	box-shadow: 5px 5px 5px grey;
+
+}
+.login-box {
+	margin: 100px auto 250px 100px;
+	width: 400px;
+	height: 450px;
+	box-shadow: grey 50px;
+	
+}
+
+.column {
+	float: left;
+	height: 100vh;
+	
+  }
+  
+.left {
+	width: 25%;	
+	padding: 2%;
+	background-color: #7692af;
+}
+  
+.right {
+	padding: 4%;
+	width: 75%;
+}
+.postImage{
+	max-width: 70%;
+    max-height: auto;
+	border: 2px;
+}

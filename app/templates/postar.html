@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Home{%endblock%}
+{% block content %}
+<form method="POST" enctype="multipart/form-data">
+	<h3 align="center">Postar</h3>
+	<div class="form-group col-7">
+		<label for="title">Título</label>
+		<input type="text"class="form-control" id="title" name="title" placeholder="Título do Post"/>
+	</div>
+	<div class="form-group col-7">
+		<label for="content">Mensagem</label>
+		<input type="text"class="form-control" id="content" name="content" placeholder="Escreva sua mensagem"/>
+	</div>
+	<div class="form-group col-7">
+		<label for="imageUpload">Imagem</label>
+		<input type="file" class="form-control"	accept="image/*" id="imageUpload" name="imageUpload">
+	</div>
+	<br/>
+	<button  type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}

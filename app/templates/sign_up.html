@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{%endblock%}
+{% block content %}
+<form method="POST" enctype="multipart/form-data">
+	<h3 align="center">Sign Up</h3>
+	<div class="form-group col-7">
+		<label for="email">Email</label>
+		<input type="email"class="form-control" id="email" name="email" placeholder="Insira um email válido"/>
+	</div>
+	<div class="form-group col-7">
+		<label for="firstName">Nome</label>
+		<input type="text"class="form-control" id="firstName" name="firstName" placeholder="Seu nome"/>
+	</div>
+	<div class="form-group col-7">
+		<label for="username">Username</label>
+		<input type="text"class="form-control" id="username" name="username" placeholder="Seu Username"/>
+	</div>
+	<div class="form-group col-7">
+		<label for="password1">Senha</label>
+		<input type="password"class="form-control" id="password1" name="password1" placeholder="Sua senha"/>
+	</div>
+	<div class="form-group col-7">
+		<label for="password2">Confirmar Senha</label>
+		<input type="password"class="form-control" id="password2" name="password2" placeholder="Confirme sua senha"/>
+	</div>
+	<div class="form-group col-7">
+		<label for="imageUpload">Imagem de Perfil</label>
+		<input type="file" class="form-control"	accept="image/*" id="imageUpload" name="imageUpload">
+	</div>
+	<br/>
+	<button  type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}
