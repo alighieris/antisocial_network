@@ -3,8 +3,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User, Profile_pic
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
-from datetime import datetime
-from .utils import image2db
+
 from flask_login import login_user, login_required, logout_user, current_user
 auth = Blueprint('auth',__name__)
 
@@ -44,7 +43,6 @@ def signup():
 		file = request.files['imageUpload']
 
 
-
 		user = User.query.filter_by(email=email).first()
 		if user:
 			flash('Esse email já existe', category='error')
@@ -57,8 +55,8 @@ def signup():
 		else:
 			flash('Conta criada com sucesso!', category='sucess')
 
-			imageData, rendered_image = image2db(file)
-			new_file = Profile_pic(image=imageData, rendered_image=rendered_image,active=True)
+		
+			new_file = Profile_pic(image=file.read(), image_name=file.filename)
 			db.session.add(new_file)
 			db.session.commit()
 
