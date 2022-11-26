@@ -1,0 +1,23 @@
+{% extends "base_logged.html" %}
+{% block title %}Usuários{%endblock%}
+{% block content %}
+<div>
+	<div name="user-list" id="user-list">
+		{% for u in users %}
+		<div class="card">
+			<div><img src="img/profile_img/{{u.profile_img_id}}" alt="profile_img{{user.id}}" height="100px"
+					width="auto" style="float:left;padding-right:5px;" />
+				<a href="">{{u.username}}</a>
+				<span></span>
+				{% if u.followed == 1 %}
+				<a href="users/unfollow/{{u.id}}">Deixar de seguir</a>
+				{% else %}
+				<a href="users/follow/{{u.id}}">Seguir</a>
+				{% endif %}
+			</div>
+		</div>
+		{% endfor %}
+
+	</div>
+</div>
+{%endblock%}

@@ -44,10 +44,35 @@ class User(db.Model, UserMixin):
 		do usuário de determinado post. Filtra apenas os posts seguidos pelo usuário ativo (self).
 		Depois faz union com os próprios posts e ordena por data.
 		'''
-		followed = Post.query.join(followers,(followers.c.followed_id == Post.user_id)
+		followedPosts = Post.query.join(followers,(followers.c.followed_id == Post.user_id)
 		).filter(followers.c.follower_id == self.id)
-		own = Post.query.filter_by(Post.user_id == self.id)
-		return followed.union(own).order_by(Post.date.desc())
+		own = Post.query.filter(Post.user_id == self.id)
+		return followedPosts.union(own).order_by(Post.date.desc())
+	
+	def followed_users(self):
+		'''Retornar usuários seguidos pelo usuário atual.'''
+		return db.session.query(User.id).join(followers,(followers.c.followed_id == User.id)).filter(followers.c.follower_id == self.id).all()
+
+
+	def follower_users(self):
+		'''Retornar usuários que seguem usuário atual.'''
+
+		return db.session.query(User.id).join(followers,(followers.c.follower_id == User.id)).filter(followers.c.followed_id == self.id).all()
+
+	def follow(self, user):
+		if not self.is_following(user):
+			self.followed.append(user)
+
+	def unfollow(self, user):
+		if self.is_following(user):
+			self.followed.remove(user)
+
+	def is_following(self, user):
+		return self.followed.filter(followers.c.followed_id == user.id).count() > 0
+	
+	def __repr__(self):
+		return f'username: {self.username}'
+
 
 class Post(db.Model):
 	id = db.Column(db.Integer, primary_key=True)

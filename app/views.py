@@ -1,15 +1,20 @@
 from flask import Blueprint, render_template, request, redirect, url_for, send_file
 from flask_login import login_required,current_user
-from .models import Post, User, File, Profile_pic
+from sqlalchemy import case
+from .models import Post, User, File, Profile_pic, followers
 from . import db
 from io import BytesIO
 views = Blueprint('views',__name__)
 
+
+
+# Views Pages
+
 @views.route('/', methods=['GET','POST'])
 @login_required
 def home():
-	posts = db.session.query(Post.id,Post.title,Post.content,Post.date, User.username,User.profile_img_id, Post.image_id).join(User,Post.user_id==User.id).order_by(Post.date)
-
+	followed_posts = current_user.followed_posts()
+	posts = followed_posts.join(User,(Post.user_id == User.id)).with_entities(Post.id,Post.title,Post.content,Post.date, User.username,User.profile_img_id, Post.image_id).all()
 	return render_template("home.html", user=current_user, posts=posts)
 
 
@@ -40,6 +45,21 @@ def create_post():
 	return render_template('postar.html', user=current_user)
 
 
+@views.route('/users')
+@login_required
+def users():
+	followed_users = [x[0] for x in current_user.followed_users()]
+	case_followed = case([
+		(User.id.in_((followed_users)),1)
+		], else_=0).label("followed")
+	users = db.session.query(User.id,User.username,User.profile_img_id, case_followed).filter(User.id != current_user.id).all()
+	return render_template("users.html", user=current_user, users=users)
+
+
+
+# Views APIs
+
+
 @views.route('/img/<type>/<img_id>', methods=['GET'])
 def img(type,img_id):
 	if type == 'profile_img':
@@ -49,3 +69,14 @@ def img(type,img_id):
 	else: return
 
 	return send_file(BytesIO(image.image), download_name=image.image_name, as_attachment=True)
+
+@views.route('/users/<action>/<user_id>', methods=['GET'])
+def follow(action,user_id):
+	user = User.query.filter(User.id==user_id).all()[0]
+	print(user)
+	if action =='follow':
+		current_user.follow(user)
+	elif action == 'unfollow':
+		current_user.unfollow(user)
+	db.session.commit()
+	return redirect(url_for('views.users'))

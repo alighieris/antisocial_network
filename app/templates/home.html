@@ -1,37 +1,30 @@
-{% extends "base.html" %}
+{% extends "base_logged.html" %}
 {% block title %}Home{%endblock%}
 {% block content %}
-<div>
-	<div class="column left" name="user-menu" id="user-menu">
-		<img src="/img/profile_img/{{user.profile_img_id}}" height="80px" width="auto" style="margin:4% 0%" />
-		<h3>{{user.username}}</h3>
-	</div>
-	<div class="column right" name="feed" id="feed">
-		<div class="topbar" name="feed-bar" id="feed-bar">
-		</div>
-		<div class="row row-cols-1 row-cols-md-2 g-4" style="height:100vh">
-			{% for post in posts %}
-			<div class="col">
-				<div class="card h-50">
-					<div class="card-header">
-						<img src="/img/profile_img/{{post.profile_img_id}}" alt="media_{{post.id}}" height="20px" width="auto" style="float:left;padding-right:5px;"/>
-						<a style="font:bolder">{{post.username}}</a>
-					</div>
-					<div class="postImage">
-						<img src="/img/post_img/{{post.image_id}}" alt="media_{{post.id}}" class="postImage">
-					</div>
-					<div class="card-body">
-						<h5 class="card-title">{{post.title}}</h5>
-						<p class="card-text">{{post.content}}</p>
-						<span></span>
-					</div>
-					<div class="card-footer">&hearts;</div>
+
+<div class="topbar" name="feed-bar" id="feed-bar">
+	<div class="row row-cols-1 row-cols-md-2 g-4" style="height:100vh">
+		{% for post in posts %}
+		<div class="col">
+			<div class="card h-50">
+				<div class="card-header">
+					<img src="/img/profile_img/{{post.profile_img_id}}" alt="media_{{post.id}}" height="20px"
+						width="auto" style="float:left;padding-right:5px;" />
+					<a style="font:bolder">{{post.username}}</a>
 				</div>
+				<div class="postImage">
+					<img src="/img/post_img/{{post.image_id}}" alt="media_{{post.id}}" class="postImage">
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">{{post.title}}</h5>
+					<p class="card-text">{{post.content}}</p>
+					<span></span>
+				</div>
+				<div class="card-footer">&hearts;</div>
 			</div>
-			{% endfor %}
 		</div>
+		{% endfor %}
 	</div>
-</div>
 </div>
 
 {% endblock %}
